@@ -1,0 +1,23 @@
+{
+  "name": "nextone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "server": "node server.js",
+    "build": "next build",
+    "start": "next start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "echarts": "^4.0.2",
+    "express": "^4.16.2",
+    "isomorphic-unfetch": "^2.0.0",
+    "mysql": "^2.15.0",
+    "next": "^4.2.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
