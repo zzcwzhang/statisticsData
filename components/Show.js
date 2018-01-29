@@ -3,7 +3,7 @@ import echarts from '../lib/echarts.min.js';
 import moment from 'moment';
 import 'echarts/lib/component/title'
 
-function createByMenu(datas,menu,y) {
+function createByMenu(datas,menu,y,x) {
     //datas是总数据
     const allData = datas.map( (odata, index) => {
         return menu.map( menuItem => {
@@ -20,7 +20,7 @@ function createByMenu(datas,menu,y) {
         type: 'scatter',
         data: allData,
         encode: {
-            x: 6,
+            x: x.value,
             y: y.value
         }
     };
@@ -34,7 +34,7 @@ function createToolTipByMenu(data, menu) {
             let value = data.data[index];
             switch (menuItem.valueType) {
                 case 'time':
-                    value = moment(value*1000).format('YYYY-MM-DD');
+                    value = moment(value).format('YYYY-MM-DD');
                     break;
                 default:
                     value = String(value)
@@ -48,8 +48,8 @@ function createToolTipByMenu(data, menu) {
 }
 
 class Show extends React.Component {
-    rendEchart(data, menu, chooseY) {
-        const testMenu = createByMenu(data,menu,chooseY);
+    rendEchart(data, menu, chooseY, chooseX) {
+        const testMenu = createByMenu(data,menu,chooseY, chooseX);
         const eConfig = {
             title: {
                 text:'天涯论坛：经济论坛-股市论坛',
@@ -57,7 +57,7 @@ class Show extends React.Component {
             },
             xAxis: {
                 scale: true,
-                type: 'time',
+                type: chooseX.type
             },
             yAxis: {
                 scale:true,
@@ -116,12 +116,12 @@ class Show extends React.Component {
         });
     }
     componentDidMount() {
-        const { data,menu, chooseY } = this.props;
-        this.rendEchart(data, menu, chooseY);
+        const { data,menu, chooseY, chooseX } = this.props;
+        this.rendEchart(data, menu, chooseY, chooseX);
     }
     componentDidUpdate() {
-        const { data,menu, chooseY } = this.props;
-        this.rendEchart(data, menu, chooseY);
+        const { data,menu, chooseY, chooseX } = this.props;
+        this.rendEchart(data, menu, chooseY, chooseX);
     }
     render() {
         return (

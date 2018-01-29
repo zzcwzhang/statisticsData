@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch'
 import React from 'react';
 import Show from '../components/Show';
 import EchartMenu from '../components/EchartMenu';
+import EchartMenuX from '../components/EchartMenuX';
 
 const layout = {
     display:'flex',
@@ -17,16 +18,20 @@ class Index extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            choose_x : 2,
+            choose_x : {
+                value: 2,
+                type: 'value'
+            },
             choose_y : {
                 value: 3,
                 type: 'value'
             }
-        }
+        };
         this.handleChangeY = this.handleChangeY.bind(this);
+        this.handleChangeX = this.handleChangeX.bind(this);
     }
     static async getInitialProps({req}) {
-        const a = await fetch('http://47.92.26.118:3000/all.do');
+        const a = await fetch('http://47.92.26.118:3001/all.do');
         const aj = await a.json();
         return {
             data:aj
@@ -36,6 +41,11 @@ class Index extends React.Component {
     handleChangeY(y) {
         this.setState({
             choose_y: y
+        });
+    }
+    handleChangeX(x) {
+        this.setState({
+            choose_x: x
         });
     }
 
@@ -115,7 +125,7 @@ class Index extends React.Component {
             {
                 field:'createTime',
                 showName: '创建时间',
-                value: data => data,
+                value: data => (data * 1000),
                 valueType:'time',
                 show: true,
                 inMenu: true
@@ -125,8 +135,9 @@ class Index extends React.Component {
             <MyLayout>
                 <div style={layout}>
                     <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
-                    <Show data={data} menu={menu} chooseY={this.state.choose_y} />
+                    <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
                 </div>
+                <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
             </MyLayout>
         )
     }
