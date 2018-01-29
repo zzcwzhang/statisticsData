@@ -1,29 +1,39 @@
 import React from 'react';
 import echarts from '../lib/echarts.min.js';
 
+function createSHOW(item,list){
+    return list.map( pn => item[pn])
+}
+
+const namelist = [
+    'ansCount',
+    'readCount',
+    'name',
+    'href'
+];
+
+function createBox(data) {
+    const echartsData = data.map( (item) => {
+        const rate = parseFloat(item.ansCount) / parseFloat(item.readCount) * 100 ;
+        return createSHOW(item,namelist);
+    });
+    const box = {
+        type: 'scatter',
+        data: echartsData,
+        encode: {
+            x: 0,
+            y: 1
+        }
+    };
+    return box;
+
+}
 
 class Show extends React.Component {
     componentDidMount() {
         const { data } = this.props;
+        console.log(data);
 
-        const echartsData = data.map( (item) => {
-            const rate = parseFloat(item.ansCount) / parseFloat(item.readCount) * 100 ;
-            return [item.ansCount, item.readCount, item.name, item.href, rate.toFixed(3)]
-        });
-        const box = {
-            type: 'scatter',
-            data: echartsData,
-            dimensions: [
-                '回复数量',
-                '点击量',
-                'title',
-                'rate'
-            ],
-            encode: {
-                x: 1,
-                y: 0
-            }
-        };
         const eConfig = {
             xAxis: {
                 scale: true,
@@ -84,7 +94,7 @@ class Show extends React.Component {
                     end:60,
                 }
             ],
-            series: box
+            series: [createBox(data)]
         };
         const tg = this.refs.main;
         const myChart = echarts.init(tg,'blue');
@@ -102,7 +112,6 @@ class Show extends React.Component {
     render() {
         return (
             <div>
-                数据分析
                 <div style={{height:'90vh',width:'90vw'}} ref="main"/>
             </div>
         )

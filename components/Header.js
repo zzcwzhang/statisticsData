@@ -1,7 +1,8 @@
 import Link from 'next/link'
+import styled from 'style-components';
 const linkStyle = {
     marginRight: 15
-}
+};
 
 export default () => (
     <div>
