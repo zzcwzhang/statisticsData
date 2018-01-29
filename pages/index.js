@@ -58,7 +58,7 @@ class Index extends React.Component {
                 showName: '链接',
                 value: data=>data,
                 valueType:'value',
-                show: false,
+                show: 'none',
                 inMenu: false
             },
             {
@@ -66,7 +66,7 @@ class Index extends React.Component {
                 showName: '标题',
                 value: data=>data,
                 valueType:'value',
-                show: true,
+                show: 'normal',
                 inMenu: false
             },
             {
@@ -74,7 +74,7 @@ class Index extends React.Component {
                 showName: '阅读量',
                 value: data=>data,
                 valueType:'value',
-                show: true,
+                show: 'count',
                 inMenu: true
             },
             {
@@ -82,7 +82,7 @@ class Index extends React.Component {
                 showName: '回复量',
                 value: data=>data,
                 valueType:'value',
-                show:true,
+                show: 'count',
                 inMenu: true
             },
             {
@@ -95,7 +95,7 @@ class Index extends React.Component {
                     const rate = parseFloat(ans) / parseFloat(read) * 100 ;
                     return rate.toFixed(2)
                 },
-                show:true,
+                show: 'rate',
                 inMenu: true
             },
             {
@@ -103,7 +103,7 @@ class Index extends React.Component {
                 showName: '楼主发言次数',
                 value: data => data,
                 valueType:'value',
-                show:true,
+                show: 'count',
                 inMenu: true
             },
             {
@@ -111,15 +111,15 @@ class Index extends React.Component {
                 showName: '打赏人数',
                 value: data => data,
                 valueType:'value',
-                show: true,
+                show: 'count',
                 inMenu: false
             },
             {
                 field:'maryaneMone',
                 showName: '打赏金额',
-                value: data => data,
+                value: data => data * 0.01,
                 valueType:'value',
-                show: true,
+                show: 'money',
                 inMenu: true
             },
             {
@@ -127,7 +127,7 @@ class Index extends React.Component {
                 showName: '创建时间',
                 value: data => (data * 1000),
                 valueType:'time',
-                show: true,
+                show: 'time',
                 inMenu: true
             },
         ];

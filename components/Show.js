@@ -1,6 +1,7 @@
 import React from 'react';
 import echarts from '../lib/echarts.min.js';
 import moment from 'moment';
+import StringUtils from '../Tools/StringUtils'
 import 'echarts/lib/component/title'
 
 function createByMenu(datas,menu,y,x) {
@@ -26,23 +27,31 @@ function createByMenu(datas,menu,y,x) {
     };
     return box;
 }
-// TODO: 目前无法显示百分比 因为valueType用来对应echarts的?Alxs的type，需要一个参数来设置ToolTip的再加工
 function createToolTipByMenu(data, menu) {
     let strArray = menu.map( (menuItem, index) => {
-        if (menuItem.show) {
-            const name = menuItem.showName;
-            let value = data.data[index];
-            switch (menuItem.valueType) {
-                case 'time':
-                    value = moment(value).format('YYYY-MM-DD');
-                    break;
-                default:
-                    value = String(value)
-            }
-            const line = name+ ' : '+value;
-            return line;
+        const name = menuItem.showName;
+        let value = data.data[index];
+        switch (menuItem.show) {
+            case 'none':
+                return '';
+                break;
+            case 'normal':
+                value = String(value);
+                break;
+            case 'count':
+                value = StringUtils.intExt(value);
+                break;
+            case 'time':
+                value = moment(value).format('YYYY年MM月DD日 hh:mm');
+                break;
+            case 'money':
+                value = StringUtils.moneyExt(value);
+                break;
+            case 'rate':
+                value = String(value)+' %';
+                break;
         }
-        return '';
+        return name+ ' : '+value;
     },'');
     return strArray.filter( s => ( s === '' ? false : true)).join('<br/>');
 }
