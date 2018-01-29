@@ -26,7 +26,7 @@ function createByMenu(datas,menu,y) {
     };
     return box;
 }
-
+// TODO: 目前无法显示百分比 因为valueType用来对应echarts的?Alxs的type，需要一个参数来设置ToolTip的再加工
 function createToolTipByMenu(data, menu) {
     let strArray = menu.map( (menuItem, index) => {
         if (menuItem.show) {

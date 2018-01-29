@@ -97,6 +97,22 @@ class Index extends React.Component {
                 inMenu: true
             },
             {
+                field:'maryanePeopleCount',
+                showName: '打赏人数',
+                value: data => data,
+                valueType:'value',
+                show: true,
+                inMenu: false
+            },
+            {
+                field:'maryaneMone',
+                showName: '打赏金额',
+                value: data => data,
+                valueType:'value',
+                show: true,
+                inMenu: true
+            },
+            {
                 field:'createTime',
                 showName: '创建时间',
                 value: data => data,
