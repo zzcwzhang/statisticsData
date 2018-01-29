@@ -3,6 +3,7 @@ import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import React from 'react';
 import Show from '../components/Show';
+import EchartMenu from '../components/EchartMenu';
 
 class Index extends React.Component {
     static async getInitialProps({req}) {
@@ -26,10 +27,48 @@ class Index extends React.Component {
 
     render() {
         const { data } = this.props;
+        const menu = [
+            {
+                field:'href',
+                showName: '链接',
+                value: data=>data,
+                show: false
+            },
+            {
+                field:'name',
+                showName: '标题',
+                value: data=>data,
+                show: true
+            },
+            {
+                field:'readCount',
+                showName: '阅读量',
+                value: data=>data,
+                show: true
+            },
+            {
+                field:'ansCount',
+                showName: '回复量',
+                value: data=>data,
+                show:true
+            },
+            {
+                field:'',
+                showName: '回复率',
+                value: data=>{
+                    const ans = data['ansCount'];
+                    const read = data['readCount'];
+                    const rate = parseFloat(ans) / parseFloat(read) * 100 ;
+                    return String(rate.toFixed(2))+'%';
+                },
+                show:true
+            },
+        ];
         return (
             <MyLayout>
                 <div>
-                    <Show data={data} />
+                    <EchartMenu menu={menu} />
+                    <Show data={data} menu={menu} />
                 </div>
             </MyLayout>
         )
