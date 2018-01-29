@@ -5,7 +5,26 @@ import React from 'react';
 import Show from '../components/Show';
 import EchartMenu from '../components/EchartMenu';
 
+const layout = {
+    display:'flex',
+    flexDirection: 'cloumn',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    background: '#CBF3FB'
+};
+
 class Index extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            choose_x : 2,
+            choose_y : {
+                value: 3,
+                type: 'value'
+            }
+        }
+        this.handleChangeY = this.handleChangeY.bind(this);
+    }
     static async getInitialProps({req}) {
         const a = await fetch('http://47.92.26.118:3000/all.do');
         const aj = await a.json();
@@ -13,17 +32,13 @@ class Index extends React.Component {
             data:aj
         }
     }
-    //回复率
-    //点击量
-    //回复量
-    //时间
-    //赏金
-    //赏金人数
-    //楼主发言次数
 
-    //帖子类型
-    // 财经 股票
-    // 问答 普通 关闭
+    handleChangeY(y) {
+        this.setState({
+            choose_y: y
+        });
+    }
+
 
     render() {
         const { data } = this.props;
@@ -32,43 +47,69 @@ class Index extends React.Component {
                 field:'href',
                 showName: '链接',
                 value: data=>data,
-                show: false
+                valueType:'value',
+                show: false,
+                inMenu: false
             },
             {
                 field:'name',
                 showName: '标题',
                 value: data=>data,
-                show: true
+                valueType:'value',
+                show: true,
+                inMenu: false
             },
             {
                 field:'readCount',
                 showName: '阅读量',
                 value: data=>data,
-                show: true
+                valueType:'value',
+                show: true,
+                inMenu: true
             },
             {
                 field:'ansCount',
                 showName: '回复量',
                 value: data=>data,
-                show:true
+                valueType:'value',
+                show:true,
+                inMenu: true
             },
             {
                 field:'',
                 showName: '回复率',
+                valueType:'value',
                 value: data=>{
                     const ans = data['ansCount'];
                     const read = data['readCount'];
                     const rate = parseFloat(ans) / parseFloat(read) * 100 ;
-                    return String(rate.toFixed(2))+'%';
+                    return rate.toFixed(2)
                 },
-                show:true
+                show:true,
+                inMenu: true
+            },
+            {
+                field:'saidTimes',
+                showName: '楼主发言次数',
+                value: data => data,
+                valueType:'value',
+                show:true,
+                inMenu: true
+            },
+            {
+                field:'createTime',
+                showName: '创建时间',
+                value: data => data,
+                valueType:'time',
+                show: true,
+                inMenu: true
             },
         ];
         return (
             <MyLayout>
-                <div>
-                    <EchartMenu menu={menu} />
-                    <Show data={data} menu={menu} />
+                <div style={layout}>
+                    <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
+                    <Show data={data} menu={menu} chooseY={this.state.choose_y} />
                 </div>
             </MyLayout>
         )

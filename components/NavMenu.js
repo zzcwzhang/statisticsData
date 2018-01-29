@@ -17,16 +17,15 @@ class NavMenu extends React.Component {
             flexDirection: 'cloumn',
             justifyContent: 'space-around',
             alignItems: 'center',
-            background: 'red'
+            background: '#04477C'
         };
         const item = {
-            color: '#FFF',
+            color: '#049FF1',
             fontSize: '30px',
         };
         return (
             <div style={box}>
-                <div style={item}>首页</div>
-                <div style={item}>贴吧数据</div>
+                <div style={item}>叭叭数据</div>
             </div>
         )
     }

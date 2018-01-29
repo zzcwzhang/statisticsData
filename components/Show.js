@@ -1,13 +1,13 @@
 import React from 'react';
 import echarts from '../lib/echarts.min.js';
+import moment from 'moment';
+import 'echarts/lib/component/title'
 
-function createByMenu(datas,menu) {
+function createByMenu(datas,menu,y) {
     //datas是总数据
     const allData = datas.map( (odata, index) => {
         return menu.map( menuItem => {
-
             //根据field从 odata原始数据对象里取值
-            // return odata[menuItem.field]
             const fieldValue = menuItem.field||'';
             if (fieldValue) {
                 return menuItem.value(odata[menuItem.field])
@@ -20,59 +20,52 @@ function createByMenu(datas,menu) {
         type: 'scatter',
         data: allData,
         encode: {
-            x: 2,
-            y: 3
+            x: 6,
+            y: y.value
         }
     };
     return box;
 }
 
 function createToolTipByMenu(data, menu) {
-    const strArray = menu.map( (menuItem, index) => {
+    let strArray = menu.map( (menuItem, index) => {
         if (menuItem.show) {
             const name = menuItem.showName;
-            const value = data.data[index];
-            const line = name+ ' : '+String(value);
+            let value = data.data[index];
+            switch (menuItem.valueType) {
+                case 'time':
+                    value = moment(value*1000).format('YYYY-MM-DD');
+                    break;
+                default:
+                    value = String(value)
+            }
+            const line = name+ ' : '+value;
             return line;
         }
         return '';
     },'');
-    const str = strArray.join('<br/>');
-    return str;
+    return strArray.filter( s => ( s === '' ? false : true)).join('<br/>');
 }
 
 class Show extends React.Component {
-    componentDidMount() {
-        const { data,menu } = this.props;
-        console.log(menu);
-        const testMenu = createByMenu(data,menu);
-        console.log(testMenu);
-
+    rendEchart(data, menu, chooseY) {
+        const testMenu = createByMenu(data,menu,chooseY);
         const eConfig = {
+            title: {
+                text:'天涯论坛：经济论坛-股市论坛',
+                subtext:'数据收集时间 2018-01-28'
+            },
             xAxis: {
                 scale: true,
-                type: 'value',
+                type: 'time',
             },
             yAxis: {
                 scale:true,
-                type: 'value',
+                type: chooseY.type,
             },
-            // legend: {
-            //     formatter: function (name) {
-            //         return echarts.format.truncateText(name, 40, '14px Microsoft Yahei', '…');
-            //     },
-            //     tooltip: {
-            //         show:false
-            //     },
-            //     selectedMode: true
-            //
-            // },
             tooltip : {
                 trigger: 'item',
                 showDelay : 0,
-                // formatter : function(p) {
-                //     return `标题: ${p.data[2]} <br/>&nbsp&nbsp点击量&nbsp:${p.data[1]} <br/>回复数量:${p.data[0]}<br/>回复率:${p.data[4]}%`;
-                // },
                 formatter : data =>createToolTipByMenu(data,menu),
                 axisPointer:{
                     show: true,
@@ -115,13 +108,20 @@ class Show extends React.Component {
         const myChart = echarts.init(tg,'blue');
         myChart.setOption(eConfig);
         myChart.on('click', (params) => {
-            // console.log(params.data[3]);
-            const tmp=window.open("about:blank","","fullscreen=1")
+            const tmp=window.open("about:blank","","fullscreen=1");
             tmp.moveTo(0,0);
             tmp.resizeTo(screen.width+20,screen.height);
             tmp.focus();
             tmp.location=params.data[0];
         });
+    }
+    componentDidMount() {
+        const { data,menu, chooseY } = this.props;
+        this.rendEchart(data, menu, chooseY);
+    }
+    componentDidUpdate() {
+        const { data,menu, chooseY } = this.props;
+        this.rendEchart(data, menu, chooseY);
     }
     render() {
         return (
