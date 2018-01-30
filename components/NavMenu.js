@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import Link from 'next/link'
 
 class NavMenu extends React.Component {
     static async getInitialProps({req}) {
@@ -11,10 +11,10 @@ class NavMenu extends React.Component {
 
     render() {
         const box = {
-            height: '50px',
-            width:'100%',
+            height: '45vw',
+            width:'9vw',
             display:'flex',
-            flexDirection: 'cloumn',
+            flexDirection: 'column',
             justifyContent: 'space-around',
             alignItems: 'center',
             background: '#04477C'
@@ -23,9 +23,19 @@ class NavMenu extends React.Component {
             color: '#049FF1',
             fontSize: '30px',
         };
+        const linkStyle= {
+            height: '30px',
+            color: '#049FF1',
+            fontSize: '24px'
+        }
         return (
             <div style={box}>
-                <div style={item}>叭叭数据</div>
+                <Link href="/index">
+                    <a style={linkStyle}>Home</a>
+                </Link>
+                <Link href="/about">
+                    <a style={linkStyle}>About</a>
+                </Link>
             </div>
         )
     }

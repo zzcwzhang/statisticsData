@@ -135,7 +135,7 @@ class Show extends React.Component {
     render() {
         return (
             <div>
-                <div style={{height:'35vw',width:'90vw'}} ref="main"/>
+                <div style={{height:'35vw',width:'85vw'}} ref="main"/>
             </div>
         )
     }

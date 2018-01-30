@@ -6,13 +6,6 @@ import Show from '../components/Show';
 import EchartMenu from '../components/EchartMenu';
 import EchartMenuX from '../components/EchartMenuX';
 
-const layout = {
-    display:'flex',
-    flexDirection: 'cloumn',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    background: '#CBF3FB'
-};
 
 class Index extends React.Component {
     constructor(props) {
@@ -131,13 +124,25 @@ class Index extends React.Component {
                 inMenu: true
             },
         ];
+
+        const layout = {
+            background: '#CBF3FB'
+        };
+        const context = {
+            display:'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+        };
         return (
             <MyLayout>
                 <div style={layout}>
-                    <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
-                    <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
+                    <div style={context}>
+                        <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
+                        <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
+                    </div>
+                    <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
                 </div>
-                <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
             </MyLayout>
         )
     }

@@ -1,8 +1,8 @@
 import React from 'react';
 
 const menuBox = {
-    width:'100%',
-    height:'10vh',
+    width:'90vw',
+    height:'5vw',
     display:'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
