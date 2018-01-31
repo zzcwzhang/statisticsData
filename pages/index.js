@@ -4,6 +4,7 @@ import React from 'react';
 import Show from '../components/Show';
 import EchartMenu from '../components/EchartMenu';
 import EchartMenuX from '../components/EchartMenuX';
+import ThemeMenu from '../components/ThemeMenu';
 
 
 class Index extends React.Component {
@@ -23,12 +24,25 @@ class Index extends React.Component {
         this.handleChangeY = this.handleChangeY.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this);
     }
-    static async getInitialProps({req}) {
-        const a = await fetch('http://47.92.26.118:3001/all.do');
-        const aj = await a.json();
-        return {
-            data:aj
-        }
+    // static async getInitialProps({req}) {
+        // const a = await fetch('http://localhost:3001/all.do');
+        // const aj = await a.json();
+        // return {
+        //     data:aj
+        // }
+    // }
+
+    componentDidMount() {
+        console.log('did mount');
+        fetch('http://localhost:3001/theme/scan/货币').then(
+            res => {
+                res.json().then( json => {
+                    this.setState({
+                        data:json
+                    })
+                })
+            }
+        )
     }
 
     handleChangeY(y) {
@@ -43,7 +57,7 @@ class Index extends React.Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { data } = this.state;
         const menu = [
             {
                 field:'href',
@@ -133,15 +147,24 @@ class Index extends React.Component {
             justifyContent: 'space-around',
             alignItems: 'center',
         };
+        const Main = (
+            <div style={layout}>
+                <div style={context}>
+                    <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
+                    <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
+                </div>
+                <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
+                <ThemeMenu />
+            </div>
+        );
+        const Loading = (
+            <div style={layout}>
+                <h1>数据读取中....</h1>
+            </div>
+        );
         return (
             <MyLayout>
-                <div style={layout}>
-                    <div style={context}>
-                        <EchartMenu menu={menu} choose={this.handleChangeY} choosed={this.state.choose_y.value} />
-                        <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
-                    </div>
-                    <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
-                </div>
+                {data.length > 0 ? Main : Loading}
             </MyLayout>
         )
     }
