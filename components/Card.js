@@ -1,4 +1,6 @@
 import React from 'react';
+// import Icon from '../font/iconfont'
+// import '../font/iconfont.js'
 
 class Card extends React.Component {
     static async getInitialProps({req}) {
@@ -43,9 +45,20 @@ class Card extends React.Component {
             color: '#fff',
             border: 0
         };
+        const iconStyle = {
+            fontFamily:"iconfont" ,
+            fontSize:21,
+            fontStyle:"normal",
+            WebkitTextStrokeWidth: 0.2,
+            WebkitFontSommthing:'antialiased',
+            MozOsxFontSmoothing:'grayscale',
+        };
         return (
             <div style={cbody}>
-                <div style={{fontSize:'24px'}}>{name}</div>
+                <div style={{fontSize:'24px'}}>
+                    {name}
+                    <i style={iconStyle}>&#xe609;</i>
+                </div>
                 <hr/>
                 <div>
                     { keywords ? keywords.map((item, index) => <button style={cbtn} key={index}>{item}</button>) : '' }
