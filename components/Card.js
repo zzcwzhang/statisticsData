@@ -11,12 +11,37 @@ class Card extends React.Component {
     }
     constructor(props) {
         super(props);
+        this.handler = this.handler.bind(this);
+    }
+
+    handler(type, tag) {
+        const {data, addKey, addFilter ,removeKeyword, removeFilterword} = this.props;
+        const name = data.name;
+        console.log(name);
+        switch(type) {
+            case 'addkey':
+                const kinput = this.refs.keyword.value;
+                addKey(name,kinput);
+                break;
+            case 'addfilter':
+                const finput = this.refs.filterword.value;
+                addFilter(name,finput);
+                break;
+            case 'removeKeyword':
+                removeKeyword(name, tag);
+                break;
+            case 'removeFilterword':
+                removeFilterword(name, tag);
+                break;
+            default:
+                console.log('other');
+        }
+
     }
 
 
     render() {
         const {data, deleteHandler} = this.props;
-        console.log(data);
         const name = data.name;
         const keywords = data.keywords || null;
         const filterwords = data.filterwords || null;
@@ -40,6 +65,38 @@ class Card extends React.Component {
             background: '#FF8C05',
             borderRadius: '6px',
         };
+        const addKeywordBox = {
+            margin: 5,
+            background: '#00CCFF',
+            borderRadius: '6px',
+            textAlign: 'center',
+            width: 90,
+            borderBottom: '1px solid #000'
+        };
+        const addKeywordInput = {
+            background: '#00CCFF',
+            border: 0,
+            borderBottom: 1,
+            width: 50,
+            textAlign: 'center',
+            borderBottom: '1px solid #000'
+        };
+        const addFilterwordBox = {
+            margin: 5,
+            background: '#FF8C05',
+            borderRadius: '6px',
+            textAlign: 'center',
+            width: 90,
+            borderBottom: '1px solid #000'
+        };
+        const addFilterwordInput = {
+            background: '#FF8C05',
+            border: 0,
+            borderBottom: 1,
+            width: 50,
+            textAlign: 'center',
+            borderBottom: '1px solid #000'
+        };
         const add = {
             margin: 5,
             width: 22,
@@ -47,7 +104,6 @@ class Card extends React.Component {
             background: '#43A102',
             borderRadius: '11px',
             color: '#fff',
-            border: 0
         };
         const headerStyle = {
             display: 'flex',
@@ -74,9 +130,16 @@ class Card extends React.Component {
                 </div>
                 <hr/>
                 <div>
-                    { keywords ? keywords.map((item, index) => <button style={cbtn} key={index}>{item}</button>) : '' }
-                    { filterwords ? filterwords.map((item, index) => <button style={fbtn} key={index}>{item}</button>) : '' }
-                    <button style={add}>+</button>
+                    { keywords ? keywords.map((item, index) => <button style={cbtn} onDoubleClick={()=>this.handler('removeKeyword',item)} key={index}>{item}</button>) : '' }
+                    { filterwords ? filterwords.map((item, index) => <button style={fbtn} onDoubleClick={()=>this.handler('removeFilterword',item)} key={index}>{item}</button>) : '' }
+                    <div style={addKeywordBox}>
+                        <input type="text" style={addKeywordInput} ref="keyword" placeholder="关键字"/>
+                        <button onClick={()=>this.handler('addkey')} style={add}>+</button>
+                    </div>
+                    <div style={addFilterwordBox}>
+                        <input type="text" style={addFilterwordInput} ref="filterword" placeholder="过滤字"/>
+                        <button onClick={()=>this.handler('addfilter')} style={add}>+</button>
+                    </div>
                 </div>
             </div>
         )

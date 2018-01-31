@@ -18,9 +18,13 @@ class screen extends React.PureComponent {
         this.state = {
             themeInput: '',
             state: {},
-        }
+        };
         this.handleAddTheme = this.handleAddTheme.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddKey = this.handleAddKey.bind(this);
+        this.handleAddFilter = this.handleAddFilter.bind(this);
+        this.handleDeleteKeyword = this.handleDeleteKeyword.bind(this);
+        this.handleDeleteFilterword = this.handleDeleteFilterword.bind(this);
     }
 
     getAllTheme() {
@@ -45,6 +49,60 @@ class screen extends React.PureComponent {
                     console.log(json);
                 });
                 this.getAllTheme();
+            })
+        }
+    }
+
+    handleAddKey(theme = '', word = '') {
+        if (theme && word) {
+            const akurl = `http://localhost:3001/theme/key/${theme}/${word}`;
+            fetch(akurl).then( res => {
+                res.json().then( json => {
+                    console.log(json);
+                })
+                this.getAllTheme();
+            })
+        }
+    }
+
+    handleAddFilter(theme = '', word = '') {
+        if (theme && word) {
+            const afurl = `http://localhost:3001/theme/filter/${theme}/${word}`;
+            fetch(afurl).then( res => {
+                res.json().then( json => {
+                    console.log(json);
+                });
+                this.getAllTheme();
+            })
+        }
+    }
+
+    handleDeleteKeyword(theme = '', word = '') {
+        const that = this;
+        if (theme && word) {
+            const dwurl = `http://localhost:3001/keyword/${theme}/${word}`;
+            fetch(dwurl,{
+                method: 'DELETE'
+            }).then( res => {
+                res.json().then( json => {
+                    console.log(json);
+                    that.getAllTheme();
+                })
+            })
+        }
+    }
+
+    handleDeleteFilterword(theme = '', word = '') {
+        const that = this;
+        if (theme && word) {
+            const dwurl = `http://localhost:3001/filterword/${theme}/${word}`;
+            fetch(dwurl,{
+                method: 'DELETE'
+            }).then( res => {
+                res.json().then( json => {
+                    console.log(json);
+                    that.getAllTheme();
+                })
             })
         }
     }
@@ -121,7 +179,17 @@ class screen extends React.PureComponent {
         return (
             <MyLayout>
                 <div style={context}>
-                    { data ? data.map( (item, index) => (<Card key={item._id} data={item} deleteHandler={this.handleDelete}/>)) : '' }
+                    { data ? data.map( (item, index) => (
+                        <Card
+                            key={item._id}
+                            data={item}
+                            addKey={this.handleAddKey}
+                            addFilter={this.handleAddFilter}
+                            removeKeyword={this.handleDeleteKeyword}
+                            removeFilterword={this.handleDeleteFilterword}
+                            deleteHandler={this.handleDelete}
+                        />
+                    )) : '' }
                 </div>
                 <div style={addNewTheme}>
                     {this.themeInput}
