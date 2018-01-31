@@ -1,5 +1,4 @@
 import MyLayout from '../components/MyLayout.js'
-import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import React from 'react';
 import Show from '../components/Show';
@@ -18,7 +17,8 @@ class Index extends React.Component {
             choose_y : {
                 value: 3,
                 type: 'value'
-            }
+            },
+            data:{}
         };
         this.handleChangeY = this.handleChangeY.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this);
@@ -41,7 +41,6 @@ class Index extends React.Component {
             choose_x: x
         });
     }
-
 
     render() {
         const { data } = this.props;

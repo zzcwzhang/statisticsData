@@ -31,10 +31,10 @@ class NavMenu extends React.Component {
         return (
             <div style={box}>
                 <Link href="/index">
-                    <a style={linkStyle}>Home</a>
+                    <a style={linkStyle}>散点图</a>
                 </Link>
-                <Link href="/about">
-                    <a style={linkStyle}>About</a>
+                <Link href="/screen">
+                    <a style={linkStyle}>筛选器</a>
                 </Link>
             </div>
         )
