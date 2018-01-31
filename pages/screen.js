@@ -20,6 +20,7 @@ class screen extends React.PureComponent {
             state: {},
         }
         this.handleAddTheme = this.handleAddTheme.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     getAllTheme() {
@@ -33,24 +34,31 @@ class screen extends React.PureComponent {
         })
     }
 
+    handleDelete(name) {
+        console.log('delete ',name);
+        if (name) {
+            const delurl = 'http://localhost:3001/theme/'+name;
+            fetch(delurl,{
+                method: 'DELETE'
+            }).then( res => {
+                res.json().then( json => {
+                    console.log(json);
+                });
+                this.getAllTheme();
+            })
+        }
+    }
+
     componentDidMount() {
         console.log('did mount');
         this.getAllTheme();
     }
 
     componentDidUpdate() {
-        // console.log('update');
-        // fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
-        //     return res.json();
-        // } ).then( json => {
-        //     console.log('json', json);
-        //     this.setState({
-        //         data: json
-        //     })
-        // })
     }
 
     handleAddTheme() {
+        const that = this;
         const input = this.refs.themeInput;
         const newTheme = input.value;
         console.log(newTheme);
@@ -60,7 +68,7 @@ class screen extends React.PureComponent {
                 this.setState({
                     themeInput: ''
                 });
-                this.getAllTheme();
+                that.getAllTheme();
             });
         })
     }
@@ -113,7 +121,7 @@ class screen extends React.PureComponent {
         return (
             <MyLayout>
                 <div style={context}>
-                    { data ? data.map( (item, index) => (<Card key={item._id} data={item} />)) : '' }
+                    { data ? data.map( (item, index) => (<Card key={item._id} data={item} deleteHandler={this.handleDelete}/>)) : '' }
                 </div>
                 <div style={addNewTheme}>
                     {this.themeInput}

@@ -9,9 +9,13 @@ class Card extends React.Component {
             data
         }
     }
+    constructor(props) {
+        super(props);
+    }
+
 
     render() {
-        const {data} = this.props;
+        const {data, deleteHandler} = this.props;
         console.log(data);
         const name = data.name;
         const keywords = data.keywords || null;
@@ -45,6 +49,13 @@ class Card extends React.Component {
             color: '#fff',
             border: 0
         };
+        const headerStyle = {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            height: 30
+        };
         const iconStyle = {
             fontFamily:"iconfont" ,
             fontSize:21,
@@ -52,12 +63,14 @@ class Card extends React.Component {
             WebkitTextStrokeWidth: 0.2,
             WebkitFontSommthing:'antialiased',
             MozOsxFontSmoothing:'grayscale',
+            border: 0,
+            background: '#fff',
         };
         return (
             <div style={cbody}>
-                <div style={{fontSize:'24px'}}>
-                    {name}
-                    <i style={iconStyle}>&#xe609;</i>
+                <div style={headerStyle}>
+                    <p style={{fontSize:24,fontWeight:600}}>{name}</p>
+                    <button style={iconStyle} onClick={() => deleteHandler(name)}>&#xe609;</button>
                 </div>
                 <hr/>
                 <div>
