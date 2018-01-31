@@ -138,6 +138,7 @@ class screen extends React.PureComponent {
             width: '90vw',
             height: '40vw',
             display: 'flex',
+            flexWrap: 'wrap',
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',

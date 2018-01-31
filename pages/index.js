@@ -5,6 +5,7 @@ import Show from '../components/Show';
 import EchartMenu from '../components/EchartMenu';
 import EchartMenuX from '../components/EchartMenuX';
 import ThemeMenu from '../components/ThemeMenu';
+import ALoading from '../components/Loading';
 
 
 class Index extends React.Component {
@@ -19,10 +20,12 @@ class Index extends React.Component {
                 value: 3,
                 type: 'value'
             },
-            data:{}
+            data:{},
+            theme: '股票'
         };
         this.handleChangeY = this.handleChangeY.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this);
+        this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
     // static async getInitialProps({req}) {
         // const a = await fetch('http://localhost:3001/all.do');
@@ -32,17 +35,39 @@ class Index extends React.Component {
         // }
     // }
 
-    componentDidMount() {
-        console.log('did mount');
-        fetch('http://localhost:3001/theme/scan/货币').then(
-            res => {
-                res.json().then( json => {
-                    this.setState({
-                        data:json
+    getDatas(ptheme) {
+        const theme = ptheme || "";
+        console.log('getDatas ',theme);
+        if (theme) {
+            fetch('http://localhost:3001/theme/scan/'+theme).then(
+                res => {
+                    res.json().then( json => {
+                        this.setState({
+                            data:json
+                        })
                     })
-                })
-            }
-        )
+                }
+            )
+        } else {
+            fetch('http://localhost:3001/all.do').then(
+                res => {
+                    res.json().then( json => {
+                        this.setState({
+                            data:json
+                        })
+                    })
+                }
+            )
+        }
+    }
+
+    componentDidMount() {
+        this.getDatas();
+    }
+
+    handleChooseTheme(theme) {
+        console.log('choose ',theme);
+        this.getDatas(theme);
     }
 
     handleChangeY(y) {
@@ -141,6 +166,14 @@ class Index extends React.Component {
         const layout = {
             background: '#CBF3FB'
         };
+        const centerLayout = {
+            height: '80vw',
+            width: '40vw',
+            display:'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }
         const context = {
             display:'flex',
             flexDirection: 'row',
@@ -154,17 +187,12 @@ class Index extends React.Component {
                     <Show data={data} menu={menu} chooseY={this.state.choose_y} chooseX={this.state.choose_x} />
                 </div>
                 <EchartMenuX menu={menu} choose={this.handleChangeX} choosed={this.state.choose_x.value} />
-                <ThemeMenu />
-            </div>
-        );
-        const Loading = (
-            <div style={layout}>
-                <h1>数据读取中....</h1>
+                <ThemeMenu chooseTheme={this.handleChooseTheme} />
             </div>
         );
         return (
             <MyLayout>
-                {data.length > 0 ? Main : Loading}
+                {data.length > 0 ? Main : ALoading}
             </MyLayout>
         )
     }

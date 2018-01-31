@@ -47,11 +47,13 @@ class Card extends React.Component {
         const filterwords = data.filterwords || null;
         // console.log(keywords, filterwords);
         const cbody = {
+            margin: '5px',
             background: '#FFF',
             border: '2px solid #049FF1',
             borderRadius: '10px',
             padding: '4px',
             minWidth: '200px',
+            maxWidth: '300px',
             minHeight: '150px',
             boxShadow: '10px 10px 5px #04477C'
         };
