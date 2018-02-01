@@ -1,40 +1,55 @@
 import React from 'react';
-import echarts from '../lib/echarts.min.js';
+// import echarts from '../lib/echarts.min.js';
+import echarts from 'echarts/lib/echarts'
 import moment from 'moment';
 import StringUtils from '../Tools/StringUtils'
+import 'echarts/lib/chart/scatter'
 import 'echarts/lib/component/title'
+import 'echarts/lib/component/markLine'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/dataZoom'
+import 'echarts/lib/component/legend'
 import Immutable from 'immutable';
 
 class Show extends React.Component {
     formatterFactory(data) {
-        const { menu } = this.props;
-        let strArray = menu.map( (menuItem, index) => {
-            const name = menuItem.showName;
-            let value = data.data[index];
-            switch (menuItem.show) {
-                case 'none':
-                    return '';
-                    break;
-                case 'normal':
-                    value = String(value);
-                    break;
-                case 'count':
-                    value = StringUtils.intExt(value);
-                    break;
-                case 'time':
-                    value = moment(value).format('YYYY年MM月DD日 hh:mm');
-                    break;
-                case 'money':
-                    value = StringUtils.moneyExt(value);
-                    break;
-                case 'rate':
-                    value = String(value)+' %';
-                    break;
-            }
-            return name+ ' : '+value;
-        },'');
-        return strArray.filter( s => ( s === '' ? false : true)).join('<br/>');
-
+        // console.log( 'test ',data.componentType);
+        const type = data.componentType;
+        if  (type === 'markLine') {
+            // console.log( 'test ',data);
+            const vlu = data.data.value;
+            const themeName = data.seriesName;
+            return `${themeName} 平均值为 ${vlu}`;
+        }
+        if (type === 'series') {
+            const { menu } = this.props;
+            let strArray = menu.map( (menuItem, index) => {
+                const name = menuItem.showName;
+                let value = data.data[index];
+                switch (menuItem.show) {
+                    case 'none':
+                        return '';
+                        break;
+                    case 'normal':
+                        value = String(value);
+                        break;
+                    case 'count':
+                        value = StringUtils.intExt(value);
+                        break;
+                    case 'time':
+                        value = moment(value).format('YYYY年MM月DD日 hh:mm');
+                        break;
+                    case 'money':
+                        value = StringUtils.moneyExt(value);
+                        break;
+                    case 'rate':
+                        value = String(value)+' %';
+                        break;
+                }
+                return name+ ' : '+value;
+            },'');
+            return strArray.filter( s => ( s === '' ? false : true)).join('<br/>');
+        }
     }
 
     leaderFactory() {
@@ -86,6 +101,15 @@ class Show extends React.Component {
                 encode: {
                     x: chooseX.value,
                     y: chooseY.value
+                },
+                markLine: {
+                    label: name,
+                    data: [
+                        {
+                            name: '平均线',
+                            type: 'average'
+                        },
+                    ]
                 }
             };
             return box
@@ -177,10 +201,25 @@ class Show extends React.Component {
         const { data }= this.props;
         this.old = data;
     }
+    getShowCount( data ) {
+        let showCount = 0;
+        data.map( (val,key) => {
+            const show = val.get('show');
+            if (show) {
+                showCount += 1;
+            }
+        });
+        return showCount;
+    }
     componentDidUpdate() {
         const { data }= this.props;
-        if(!Immutable.is( data, this.old)){
-            this.myChart.clear();
+        // 优化render
+        const oldCount = this.getShowCount( this.old );
+        const newCount = this.getShowCount(data);
+        if (newCount > 0) {
+            if(!Immutable.is( data, this.old) && (newCount < oldCount)){
+                this.myChart.clear();
+            }
         }
         this.rendEchart();
         this.old = data;

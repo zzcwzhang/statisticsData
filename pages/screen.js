@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch'
 import swal from 'sweetalert2'
 import MyLayout from '../components/MyLayout.js'
 import Card from '../components/Card'
+import Tip from '../components/Tip'
 
 class screen extends React.PureComponent {
     // static async getInitialProps({req}) {
@@ -187,7 +188,6 @@ class screen extends React.PureComponent {
             width: 100,
 
         };
-
         return (
             <MyLayout>
                 <div style={context}>
@@ -206,6 +206,7 @@ class screen extends React.PureComponent {
                 <div style={addNewTheme}>
                     <input style={inputTheme} ref="themeInput" type="text" placeholder='添加新主题' onKeyDown={this.handleAddTheme}/>
                 </div>
+                <Tip><strong>双击 关键词 或 过滤字 即可删除</strong></Tip>
             </MyLayout>
         )
     }
