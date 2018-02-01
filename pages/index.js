@@ -30,7 +30,7 @@ class Index extends React.Component {
         this.getDatas = this.getDatas.bind(this);
     }
     // static async getInitialProps({req}) {
-        // const a = await fetch('http://localhost:3001/all.do');
+        // const a = await fetch('http://47.92.26.118:3001/all.do');
         // const aj = await a.json();
         // return {
         //     data:aj
@@ -43,9 +43,9 @@ class Index extends React.Component {
         const oldData = that.state.data;
         let Url;
         if (themeName !== '全部') {
-            Url = 'http://localhost:3001/theme/scan/'+themeName;
+            Url = 'http://47.92.26.118:3001/theme/scan/'+themeName;
         }else {
-            Url = 'http://localhost:3001/all.do'
+            Url = 'http://47.92.26.118:3001/all.do'
         }
         // 判断是否已经抓取
         const tagTheme = oldData.getIn([themeName,'show']);

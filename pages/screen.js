@@ -30,7 +30,7 @@ class screen extends React.PureComponent {
     }
 
     getAllTheme() {
-        fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
+        fetch('http://47.92.26.118:3001/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
             this.setState({
@@ -49,7 +49,7 @@ class screen extends React.PureComponent {
         }).then( result => {
             if (result.value) {
                 if (name) {
-                    const delurl = 'http://localhost:3001/theme/'+name;
+                    const delurl = 'http://47.92.26.118:3001/theme/'+name;
                     fetch(delurl,{
                         method: 'DELETE'
                     }).then( res => {
@@ -65,7 +65,7 @@ class screen extends React.PureComponent {
 
     handleAddKey(theme = '', word = '') {
         if (theme && word) {
-            const akurl = `http://localhost:3001/theme/key/${theme}/${word}`;
+            const akurl = `http://47.92.26.118:3001/theme/key/${theme}/${word}`;
             fetch(akurl).then( res => {
                 res.json().then( json => {
                     // console.log(json);
@@ -77,7 +77,7 @@ class screen extends React.PureComponent {
 
     handleAddFilter(theme = '', word = '') {
         if (theme && word) {
-            const afurl = `http://localhost:3001/theme/filter/${theme}/${word}`;
+            const afurl = `http://47.92.26.118:3001/theme/filter/${theme}/${word}`;
             fetch(afurl).then( res => {
                 res.json().then( json => {
                     // console.log(json);
@@ -90,7 +90,7 @@ class screen extends React.PureComponent {
     handleDeleteKeyword(theme = '', word = '') {
         const that = this;
         if (theme && word) {
-            const dwurl = `http://localhost:3001/keyword/${theme}/${word}`;
+            const dwurl = `http://47.92.26.118:3001/keyword/${theme}/${word}`;
             fetch(dwurl,{
                 method: 'DELETE'
             }).then( res => {
@@ -105,7 +105,7 @@ class screen extends React.PureComponent {
     handleDeleteFilterword(theme = '', word = '') {
         const that = this;
         if (theme && word) {
-            const dwurl = `http://localhost:3001/filterword/${theme}/${word}`;
+            const dwurl = `http://47.92.26.118:3001/filterword/${theme}/${word}`;
             fetch(dwurl,{
                 method: 'DELETE'
             }).then( res => {
@@ -130,7 +130,7 @@ class screen extends React.PureComponent {
         if (e.keyCode == 13) {
             const word = e.target.value;
             e.target.value = '';
-            fetch('http://localhost:3001/theme/add/'+word).then( res => {
+            fetch('http://47.92.26.118:3001/theme/add/'+word).then( res => {
                 res.json().then( res => {
                     // console.log(res);
                     this.setState({

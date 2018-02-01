@@ -29,7 +29,7 @@ class ThemeMenu extends React.Component {
         }
     }
     getAllTheme() {
-        fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
+        fetch('http://47.92.26.118:3001/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
             this.setState({
