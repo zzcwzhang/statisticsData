@@ -3,6 +3,7 @@ import echarts from '../lib/echarts.min.js';
 import moment from 'moment';
 import StringUtils from '../Tools/StringUtils'
 import 'echarts/lib/component/title'
+import Immutable from 'immutable';
 
 class Show extends React.Component {
     formatterFactory(data) {
@@ -36,11 +37,25 @@ class Show extends React.Component {
 
     }
 
+    leaderFactory() {
+        const { data } = this.props;
+        const leaders = [];
+        data.map( (val,key) => {
+            const name = key;
+            leaders.push(name);
+        });
+        return leaders;
+    }
+
     DatasFactory(){
         const { data,menu, chooseY, chooseX } = this.props;
         const allTheme = data.map( (val,key) => {
-            console.log('data key:',key,' val ',val);
             const name = key;
+            const show = val.get('show');
+            if (!show) {
+                return null;
+            }
+
             let datas = val.get('data');
             // 外层遍历 该主题的每条数据
             const getDataByMenu = datas.map( (v) => {
@@ -48,8 +63,20 @@ class Show extends React.Component {
                 return menu.map( menuItem => {
                     const field = menuItem.field || '';
                     if (field) {
-                        return v.get(field)
-                    } else return '';
+                        if (menuItem.value) {
+                            return menuItem.value(v.get(field))
+                        } else {
+                            return v.get(field)
+                        }
+
+                    } else {
+                        if (menuItem.value) {
+                            return menuItem.value(v);
+                            return '';
+                        } else {
+                            return "";
+                        }
+                    }
                 })
             });
             const box = {
@@ -63,10 +90,11 @@ class Show extends React.Component {
             };
             return box
         });
-        // console.log("allTheme",allTheme.toJS());
         const list = [];
         allTheme.map( v => {
-            list.push(v)
+            if (v) {
+                list.push(v)
+            }
         });
         return list;
     }
@@ -74,10 +102,14 @@ class Show extends React.Component {
     rendEchart() {
         const { chooseY, chooseX } = this.props;
         const collection = this.DatasFactory();
+        const leaders = this.leaderFactory();
         const eConfig = {
             title: {
                 text:'天涯论坛：经济论坛-股市论坛',
                 subtext:'数据收集时间 2018-01-28'
+            },
+            legend: {
+                data:leaders
             },
             xAxis: {
                 scale: true,
@@ -128,23 +160,30 @@ class Show extends React.Component {
             ],
             series: collection
         };
+        this.myChart.setOption(eConfig);
+    }
+
+    componentDidMount() {
         const tg = this.refs.main;
-        const myChart = echarts.init(tg,'blue');
-        myChart.setOption(eConfig);
-        myChart.on('click', (params) => {
+        this.myChart = echarts.init(tg,'blue');
+        this.myChart.on('click', (params) => {
             const tmp=window.open("about:blank","","fullscreen=1");
             tmp.moveTo(0,0);
             tmp.resizeTo(screen.width+20,screen.height);
             tmp.focus();
             tmp.location=params.data[0];
         });
-    }
-
-    componentDidMount() {
         this.rendEchart();
+        const { data }= this.props;
+        this.old = data;
     }
     componentDidUpdate() {
+        const { data }= this.props;
+        if(!Immutable.is( data, this.old)){
+            this.myChart.clear();
+        }
         this.rendEchart();
+        this.old = data;
     }
     render() {
         return (

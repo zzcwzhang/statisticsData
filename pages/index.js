@@ -38,50 +38,34 @@ class Index extends React.Component {
     // }
 
     getDatas(ptheme) {
-        const themeName = ptheme || "";
+        const themeName = ptheme || "全部";
         const that = this;
-        console.log('getDatas ',themeName);
-        if (themeName) {
-            // const themes = this.state.data;
-            // for (let themeItem of themes) {
-            //     if (themeItem.theme === themeName) {
-            //         let newTheme = themeItem;
-            //         newTheme.show = !newTheme.show;
-            //
-            //     }
-            // }
-
-            fetch('http://localhost:3001/theme/scan/'+themeName).then(
+        const oldData = that.state.data;
+        let Url;
+        if (themeName !== '全部') {
+            Url = 'http://localhost:3001/theme/scan/'+themeName;
+        }else {
+            Url = 'http://localhost:3001/all.do'
+        }
+        // 判断是否已经抓取
+        const tagTheme = oldData.getIn([themeName,'show']);
+        if (tagTheme) {
+            const ndata = oldData.setIn([themeName,'show'], false);
+            this.setState({
+                data: ndata
+            })
+        } else {
+            // 请求数据
+            fetch(Url).then(
                 res => {
                     res.json().then( json => {
-                        console.log('1 ',this.state.data);
-                        const oldData = that.state.data;
-                        const newData = oldData.set(themeName,fromJS({'data': json}));
-                        // console.log(newData);
+                        const newData = oldData.set(themeName,fromJS({'data': json,'show':true}));
                         this.setState({
                             data: newData
                         })
                     })
                 }
             )
-        } else {
-            // this.setState({
-            //     data: Map({})
-            // })
-            // fetch('http://localhost:3001/all.do').then(
-            //     res => {
-            //         res.json().then( json => {
-            //             this.setState({
-            //                 data:[
-            //                     {
-            //                         theme:'全部',
-            //                         data:json
-            //                     }
-            //                 ]
-            //             })
-            //         })
-            //     }
-            // )
         }
     }
 
@@ -90,7 +74,6 @@ class Index extends React.Component {
     }
 
     handleChooseTheme(theme) {
-        console.log('choose ',theme);
         this.getDatas(theme);
     }
 
@@ -111,7 +94,7 @@ class Index extends React.Component {
             {
                 field:'href',
                 showName: '链接',
-                value: data=>data,
+                // value: data=>data,
                 valueType:'value',
                 show: 'none',
                 inMenu: false
@@ -119,7 +102,7 @@ class Index extends React.Component {
             {
                 field:'name',
                 showName: '标题',
-                value: data=>data,
+                // value: data=>data,
                 valueType:'value',
                 show: 'normal',
                 inMenu: false
@@ -127,7 +110,7 @@ class Index extends React.Component {
             {
                 field:'readCount',
                 showName: '阅读量',
-                value: data=>data,
+                // value: data=>data,
                 valueType:'value',
                 show: 'count',
                 inMenu: true
@@ -135,7 +118,7 @@ class Index extends React.Component {
             {
                 field:'ansCount',
                 showName: '回复量',
-                value: data=>data,
+                // value: data=>data,
                 valueType:'value',
                 show: 'count',
                 inMenu: true
@@ -145,8 +128,10 @@ class Index extends React.Component {
                 showName: '回复率',
                 valueType:'value',
                 value: data=>{
-                    const ans = data['ansCount'];
-                    const read = data['readCount'];
+                    // const ans = data['ansCount'];
+                    const ans = data.get('ansCount');
+                    // const read = data['readCount'];
+                    const read = data.get('readCount');
                     const rate = parseFloat(ans) / parseFloat(read) * 100 ;
                     return rate.toFixed(2)
                 },
@@ -156,7 +141,7 @@ class Index extends React.Component {
             {
                 field:'saidTimes',
                 showName: '楼主发言次数',
-                value: data => data,
+                // value: data => data,
                 valueType:'value',
                 show: 'count',
                 inMenu: true
@@ -164,7 +149,7 @@ class Index extends React.Component {
             {
                 field:'maryanePeopleCount',
                 showName: '打赏人数',
-                value: data => data,
+                // value: data => data,
                 valueType:'value',
                 show: 'count',
                 inMenu: false

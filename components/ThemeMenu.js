@@ -32,7 +32,6 @@ class ThemeMenu extends React.Component {
         fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
-            console.log('ThemeMenu json', json);
             this.setState({
                 data: json
             })
@@ -52,6 +51,7 @@ class ThemeMenu extends React.Component {
                 }) : <h2>Loading</h2>;
         return (
             <div style={menuBox}>
+                <LButton onClick={()=> chooseTheme('全部')}>全部</LButton>
                 {Main}
             </div>
         )
