@@ -141,7 +141,8 @@ class screen extends React.PureComponent {
             flexWrap: 'wrap',
             flexDirection: 'row',
             justifyContent: 'space-around',
-            alignItems: 'center',
+            alignContent: 'space-around',
+            alignItems: 'baseline',
         };
         const ibc = '#70E1FF';
         const addNewTheme = {
