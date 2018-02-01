@@ -32,7 +32,7 @@ class ThemeMenu extends React.Component {
         fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
-            console.log('json', json);
+            console.log('ThemeMenu json', json);
             this.setState({
                 data: json
             })
@@ -43,7 +43,7 @@ class ThemeMenu extends React.Component {
     }
 
     render() {
-        const { data} = this.state;
+        const { data } = this.state;
         const { chooseTheme } = this.props;
         const Main = data.length > 0 ? data.map( item => {
                     return (

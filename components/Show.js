@@ -38,27 +38,37 @@ class Show extends React.Component {
 
     DatasFactory(){
         const { data,menu, chooseY, chooseX } = this.props;
-        const allData = data.map( (odata) => {
-            return menu.map( menuItem => {
-                //根据field从 odata原始数据对象里取值
-                const fieldValue = menuItem.field||'';
-                if (fieldValue) {
-                    return menuItem.value(odata[menuItem.field])
-                } else {
-                    return menuItem.value(odata)
+        const allTheme = data.map( (val,key) => {
+            console.log('data key:',key,' val ',val);
+            const name = key;
+            let datas = val.get('data');
+            // 外层遍历 该主题的每条数据
+            const getDataByMenu = datas.map( (v) => {
+                // 从menu列表里取出Field名
+                return menu.map( menuItem => {
+                    const field = menuItem.field || '';
+                    if (field) {
+                        return v.get(field)
+                    } else return '';
+                })
+            });
+            const box = {
+                name: name,
+                type: 'scatter',
+                data: getDataByMenu .toJS(),
+                encode: {
+                    x: chooseX.value,
+                    y: chooseY.value
                 }
-            })
+            };
+            return box
         });
-        const box = {
-            type: 'scatter',
-            data: allData,
-            encode: {
-                x: chooseX.value,
-                y: chooseY.value
-            }
-        };
-        return box;
-
+        // console.log("allTheme",allTheme.toJS());
+        const list = [];
+        allTheme.map( v => {
+            list.push(v)
+        });
+        return list;
     }
 
     rendEchart() {

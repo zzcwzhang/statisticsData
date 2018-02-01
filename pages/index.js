@@ -6,6 +6,7 @@ import EchartMenu from '../components/EchartMenu';
 import EchartMenuX from '../components/EchartMenuX';
 import ThemeMenu from '../components/ThemeMenu';
 import ALoading from '../components/Loading';
+import { Map, fromJS } from 'immutable';
 
 
 class Index extends React.Component {
@@ -20,12 +21,13 @@ class Index extends React.Component {
                 value: 3,
                 type: 'value'
             },
-            data:{},
+            data: Map({}),
             theme: '股票'
         };
         this.handleChangeY = this.handleChangeY.bind(this);
         this.handleChangeX = this.handleChangeX.bind(this);
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
+        this.getDatas = this.getDatas.bind(this);
     }
     // static async getInitialProps({req}) {
         // const a = await fetch('http://localhost:3001/all.do');
@@ -36,28 +38,50 @@ class Index extends React.Component {
     // }
 
     getDatas(ptheme) {
-        const theme = ptheme || "";
-        console.log('getDatas ',theme);
-        if (theme) {
-            fetch('http://localhost:3001/theme/scan/'+theme).then(
+        const themeName = ptheme || "";
+        const that = this;
+        console.log('getDatas ',themeName);
+        if (themeName) {
+            // const themes = this.state.data;
+            // for (let themeItem of themes) {
+            //     if (themeItem.theme === themeName) {
+            //         let newTheme = themeItem;
+            //         newTheme.show = !newTheme.show;
+            //
+            //     }
+            // }
+
+            fetch('http://localhost:3001/theme/scan/'+themeName).then(
                 res => {
                     res.json().then( json => {
+                        console.log('1 ',this.state.data);
+                        const oldData = that.state.data;
+                        const newData = oldData.set(themeName,fromJS({'data': json}));
+                        // console.log(newData);
                         this.setState({
-                            data:json
+                            data: newData
                         })
                     })
                 }
             )
         } else {
-            fetch('http://localhost:3001/all.do').then(
-                res => {
-                    res.json().then( json => {
-                        this.setState({
-                            data:json
-                        })
-                    })
-                }
-            )
+            // this.setState({
+            //     data: Map({})
+            // })
+            // fetch('http://localhost:3001/all.do').then(
+            //     res => {
+            //         res.json().then( json => {
+            //             this.setState({
+            //                 data:[
+            //                     {
+            //                         theme:'全部',
+            //                         data:json
+            //                     }
+            //                 ]
+            //             })
+            //         })
+            //     }
+            // )
         }
     }
 
@@ -173,7 +197,7 @@ class Index extends React.Component {
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-        }
+        };
         const context = {
             display:'flex',
             flexDirection: 'row',
@@ -192,7 +216,8 @@ class Index extends React.Component {
         );
         return (
             <MyLayout>
-                {data.length > 0 ? Main : ALoading}
+                {/*{data.length > 0 ? Main : ALoading}*/}
+                {Main}
             </MyLayout>
         )
     }
