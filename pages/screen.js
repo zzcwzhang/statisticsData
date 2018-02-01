@@ -1,5 +1,6 @@
 import React from 'react';
 import fetch from 'isomorphic-unfetch'
+import swal from 'sweetalert2'
 import MyLayout from '../components/MyLayout.js'
 import Card from '../components/Card'
 
@@ -31,7 +32,6 @@ class screen extends React.PureComponent {
         fetch('http://localhost:3001/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
-            console.log('json', json);
             this.setState({
                 data: json
             })
@@ -39,18 +39,27 @@ class screen extends React.PureComponent {
     }
 
     handleDelete(name) {
-        console.log('delete ',name);
-        if (name) {
-            const delurl = 'http://localhost:3001/theme/'+name;
-            fetch(delurl,{
-                method: 'DELETE'
-            }).then( res => {
-                res.json().then( json => {
-                    console.log(json);
-                });
-                this.getAllTheme();
-            })
-        }
+        swal({
+            title: `确定删除 ${name} 主题?`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "确定",
+            cancelButtonText: "取消"
+        }).then( result => {
+            if (result.value) {
+                if (name) {
+                    const delurl = 'http://localhost:3001/theme/'+name;
+                    fetch(delurl,{
+                        method: 'DELETE'
+                    }).then( res => {
+                        res.json().then( json => {
+                            // console.log(json);
+                        });
+                        this.getAllTheme();
+                    })
+                }
+            }
+        });
     }
 
     handleAddKey(theme = '', word = '') {
@@ -58,7 +67,7 @@ class screen extends React.PureComponent {
             const akurl = `http://localhost:3001/theme/key/${theme}/${word}`;
             fetch(akurl).then( res => {
                 res.json().then( json => {
-                    console.log(json);
+                    // console.log(json);
                 })
                 this.getAllTheme();
             })
@@ -70,7 +79,7 @@ class screen extends React.PureComponent {
             const afurl = `http://localhost:3001/theme/filter/${theme}/${word}`;
             fetch(afurl).then( res => {
                 res.json().then( json => {
-                    console.log(json);
+                    // console.log(json);
                 });
                 this.getAllTheme();
             })
@@ -85,7 +94,7 @@ class screen extends React.PureComponent {
                 method: 'DELETE'
             }).then( res => {
                 res.json().then( json => {
-                    console.log(json);
+                    // console.log(json);
                     that.getAllTheme();
                 })
             })
@@ -100,7 +109,7 @@ class screen extends React.PureComponent {
                 method: 'DELETE'
             }).then( res => {
                 res.json().then( json => {
-                    console.log(json);
+                    // console.log(json);
                     that.getAllTheme();
                 })
             })
@@ -108,27 +117,28 @@ class screen extends React.PureComponent {
     }
 
     componentDidMount() {
-        console.log('did mount');
+        // console.log('did mount');
         this.getAllTheme();
     }
 
     componentDidUpdate() {
     }
 
-    handleAddTheme() {
-        const that = this;
-        const input = this.refs.themeInput;
-        const newTheme = input.value;
-        console.log(newTheme);
-        fetch('http://localhost:3001/theme/add/'+newTheme).then( res => {
-            res.json().then( res => {
-                console.log(res);
-                this.setState({
-                    themeInput: ''
+    handleAddTheme(e) {
+        const that= this;
+        if (e.keyCode == 13) {
+            const word = e.target.value;
+            e.target.value = '';
+            fetch('http://localhost:3001/theme/add/'+word).then( res => {
+                res.json().then( res => {
+                    // console.log(res);
+                    this.setState({
+                        themeInput: ''
+                    });
+                    that.getAllTheme();
                 });
-                that.getAllTheme();
-            });
-        })
+            })
+        }
     }
 
     render() {
@@ -167,7 +177,7 @@ class screen extends React.PureComponent {
             color: '#FFF',
             fontSize: 30,
             border: 0,
-            width: 100,
+            width: 150,
         };
         const addTheme = {
             background: ibc,
@@ -194,8 +204,8 @@ class screen extends React.PureComponent {
                     )) : '' }
                 </div>
                 <div style={addNewTheme}>
-                    {this.themeInput}
-                    <button style={addTheme} onClick={this.handleAddTheme} >添加</button> <input style={inputTheme} ref="themeInput" type="text" placeholder='新主题'/> </div>
+                    <input style={inputTheme} ref="themeInput" type="text" placeholder='添加新主题' onKeyDown={this.handleAddTheme}/>
+                </div>
             </MyLayout>
         )
     }

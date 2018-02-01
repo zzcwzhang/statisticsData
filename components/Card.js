@@ -39,7 +39,7 @@ class Card extends React.Component {
     handler(type, tag) {
         const {data, addKey, addFilter ,removeKeyword, removeFilterword} = this.props;
         const name = data.name;
-        console.log(name);
+        // console.log(name);
         switch(type) {
             case 'addkey':
                 const kinput = this.refs.keyword.value;
@@ -56,7 +56,7 @@ class Card extends React.Component {
                 removeFilterword(name, tag);
                 break;
             default:
-                console.log('other');
+                // console.log('other');
         }
 
     }
