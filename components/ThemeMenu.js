@@ -1,5 +1,6 @@
 import React from 'react';
 import LButton from './LikeButton';
+import URL from '../config/systemConfig';
 
 const menuBox = {
     width:'89.6vw',
@@ -29,7 +30,7 @@ class ThemeMenu extends React.Component {
         }
     }
     getAllTheme() {
-        fetch('http://47.92.26.118:3001/theme/all.do',{cache: 'no-store'}).then( res => {
+        fetch( URL + '/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
             this.setState({

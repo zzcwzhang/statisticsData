@@ -7,6 +7,7 @@ import EchartMenuX from '../components/EchartMenuX';
 import ThemeMenu from '../components/ThemeMenu';
 import ALoading from '../components/Loading';
 import { Map, fromJS } from 'immutable';
+import URL from '../config/systemConfig';
 
 
 class Index extends React.Component {
@@ -43,9 +44,9 @@ class Index extends React.Component {
         const oldData = that.state.data;
         let Url;
         if (themeName !== '全部') {
-            Url = 'http://47.92.26.118:3001/theme/scan/'+themeName;
+            Url = URL+'/theme/scan/'+themeName;
         }else {
-            Url = 'http://47.92.26.118:3001/all.do'
+            Url = URL+'/all.do'
         }
         // 判断是否已经抓取
         const tagTheme = oldData.getIn([themeName,'show']);

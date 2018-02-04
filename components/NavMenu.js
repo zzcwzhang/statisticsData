@@ -53,6 +53,9 @@ class NavMenu extends React.Component {
                 <Link href="/index">
                     <a style={linkStyle}><i style={iconStyle}>&#xeaae;</i>散点图</a>
                 </Link>
+                <Link href="/piebar">
+                    <a style={linkStyle}><i style={iconStyle}>&#xe624;</i>统计图</a>
+                </Link>
                 <Link href="/screen">
                     <a style={linkStyle}><i style={iconStyle}>&#xe69c;</i>筛选器</a>
                 </Link>
