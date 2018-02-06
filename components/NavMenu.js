@@ -56,6 +56,9 @@ class NavMenu extends React.Component {
                 <Link href="/piebar">
                     <a style={linkStyle}><i style={iconStyle}>&#xe624;</i>统计图</a>
                 </Link>
+                <Link href="/timerange">
+                    <a style={linkStyle}><i style={iconStyle}>&#xe74d;</i>时间段</a>
+                </Link>
                 <Link href="/screen">
                     <a style={linkStyle}><i style={iconStyle}>&#xe69c;</i>筛选器</a>
                 </Link>

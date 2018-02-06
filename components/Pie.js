@@ -6,11 +6,10 @@ import 'echarts/lib/component/title'
 import 'echarts/lib/component/markLine'
 import 'echarts/lib/component/tooltip'
 
-const config = vdata => {
+const config = (vdata, title) => {
     return {
-        // backgroundColor: '#2c343c',
         title: {
-            text: '访问量',
+            text: title,
             left: 'center',
             top: 20,
             textStyle: {
@@ -33,7 +32,7 @@ const config = vdata => {
         },
         series : [
             {
-                name:'访问来源',
+                name:'建贴时间',
                 type:'pie',
                 radius : '55%',
                 center: ['50%', '50%'],
@@ -87,16 +86,12 @@ class Pie extends React.Component {
     }
 
     componentDidMount() {
-        const tg = this.refs.main;
-        this.myChart = echarts.init(tg,'blue');
-        const tdata = [
-            {value:335, name:'直接访问'},
-            {value:310, name:'邮件营销'},
-            {value:274, name:'联盟广告'},
-            {value:235, name:'视频广告'},
-            {value:400, name:'搜索引擎'}
-        ];
-        this.myChart.setOption(config(tdata));
+      const { data, title } = this.props;
+      const tg = this.refs.main;
+      this.myChart = echarts.init(tg,'blue');
+      const configE = config(data, title);
+      console.log(configE);
+      this.myChart.setOption(configE);
     }
 
     render() {

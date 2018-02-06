@@ -57,8 +57,41 @@ const spliceByTheme = (theme, data) => new Promise ((resolve, rject) => {
     resolve(result.toJS());
 });
 
+const spliceByWeek = (data) => new Promise((resolve, rject) => {
+  const allWeek = [[],[],[],[],[],[],[]];
+  
+  const weekArray = data.forEach( item => {
+    const ctime = item.createTime;
+    const ct = new Date(ctime * 1000);
+    const week = ct.getDay();
+    allWeek[week].push(item);
+  })
+
+  resolve(allWeek);
+
+});
+
+const spliceByHour = (data) => new Promise((resolve, rject) => {
+  const allHours = [];
+  for(let i = 0; i < 24; i++) {
+    allHours.push([])
+  }
+  
+  const weekArray = data.forEach( item => {
+    const ctime = item.createTime;
+    const ct = new Date(ctime * 1000);
+    const week = ct.getHours();
+    allHours[week].push(item);
+  })
+
+  resolve(allHours);
+
+});
+
 export default {
     spliceByTheme,
     sumByName,
-    averageByName
+    averageByName,
+  spliceByWeek,
+  spliceByHour
 }
