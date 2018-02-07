@@ -88,10 +88,32 @@ const spliceByHour = (data) => new Promise((resolve, rject) => {
 
 });
 
+// 根据创建时间祛除重复项
+const unque = (array, name) => {
+  if(array&&array.length > 0) {
+    const r = array.sort((a,b) => {
+      return a.createTime - b.createTime;
+    });
+    const res = [r[0]];
+    for (let i = 0;i < r.length; i++) {
+      let j = i+1;
+      if( j< r.length) {
+        if( r[j].name !== r[i].name) {
+          res.push(r[i]);
+        }
+      }
+    }
+    return res;
+  } else {
+    return [];
+  }
+};
+
 export default {
     spliceByTheme,
     sumByName,
     averageByName,
   spliceByWeek,
-  spliceByHour
+  spliceByHour,
+  unque
 }

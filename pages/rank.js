@@ -65,7 +65,8 @@ class rank extends React.Component {
         pool.push.apply(pool,item.data)
       }
     })
-    return pool
+    const afterUnque = Calulator.unque(pool,'name') || [];
+    return afterUnque;
   }
 
   componentDidMount() {
