@@ -16,17 +16,17 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "isomorphic-unfetch": "^2.0.0",
-    "moment": "^2.20.1",
-    "sweetalert2": "^7.8.6",
-    "uiw": "^1.6.1",
-    "echarts": "^4.0.2",
-    "immutable": "^3.8.2",
     "babel-plugin-css-modules-transform": "^1.2.1",
     "babel-plugin-inline-react-svg": "^0.5.2",
+    "echarts": "^4.0.2",
+    "immutable": "^3.8.2",
+    "isomorphic-unfetch": "^2.0.0",
+    "moment": "^2.20.1",
     "next": "^4.2.3",
     "node-sass": "^4.5.0",
     "postcss": "^5.2.16",
-    "postcss-cssnext": "^2.10.0"
+    "postcss-cssnext": "^2.10.0",
+    "sweetalert2": "^7.8.6",
+    "uiw": "^1.6.1"
   }
 }

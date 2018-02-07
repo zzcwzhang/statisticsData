@@ -2,8 +2,9 @@ import React from 'react';
 import Colors from '../../config/colors'
 import Tools from '../../Tools/StringUtils'
 import { List } from 'immutable'
-//import ReactCSSTransitionGroup from 'react-transition-group'
 
+
+const LINK = 'LINK';
 const NORMAL = 'NORMAL';
 const NUMBER = 'NUMBER';
 const MONEY = 'MONEY';
@@ -63,6 +64,8 @@ class Body extends React.Component {
     const fdata = data.map( (row) => {
       const nrow = menu.map( menuItem => {
         switch (menuItem.type) {
+          case LINK:
+            return <a href={menuItem.url(row)}>{row[menuItem.field]}</a>
           case NORMAL:
             return row[menuItem.field];
             break;
@@ -124,21 +127,20 @@ class Body extends React.Component {
       <table style={this.props.style}>
         <tbody>
         <tr style={headerStyle}>
+          <th style={normalStyle}>排名</th>
           {menu.map((item, index) => {
             return <th key={index} style={index==this.state.sortIndex ? chooseStyle : normalStyle} onClick={()=>this.setState({sortIndex:index})} >{item.name}{index==this.state.sortIndex ? <i style={iconStyle}>&#xe604;</i> : ''}</th>
           })}
         </tr>
+
+
       { sary.length > 0? sary.map( (r,i) => {
         return (
           <tr key={i}>
-            {r.map( (d,i) => {
-              return <td key={i}>{d}</td>
-            })}
+            <td>{i+1}</td> {r.map( (d,i) => { return <td key={i}>{d}</td> })}
           </tr>
         ) 
-      }): <tr>
-          <td>Loading</td>
-      </tr>}
+      }): <tr> <td>Loading</td> </tr>}
 
         </tbody>
       </table>

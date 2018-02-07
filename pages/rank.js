@@ -8,6 +8,7 @@ import Body from '../components/Table/Body'
 import ToggleBtn from '../components/ToggleBtn'
 import moment from 'moment'
 
+const LINK = 'LINK';
 const NORMAL = 'NORMAL';
 const NUMBER = 'NUMBER';
 const MONEY = 'MONEY';
@@ -101,7 +102,8 @@ class rank extends React.Component {
         {
           name:'标题',
           field: 'name',
-          type: NORMAL
+          url: data=>data.href,
+          type: LINK
         },{
           name:'点击量',
           field: 'readCount',

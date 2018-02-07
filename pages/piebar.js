@@ -14,9 +14,9 @@ class pieBar extends React.Component {
             etype: '总量',
             shows: {
                 '数量':true,
-                '阅读量':true,
-                '回复量':true,
-                '总赏金':true
+                '阅读量':false,
+                '回复量':false,
+                '总赏金':false
             }
         };
         this.createBar = this.createBar.bind(this);
