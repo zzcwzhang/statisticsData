@@ -46,7 +46,7 @@ class Body extends React.Component {
       const sary = afterSort || Rows;
       const res = [];
       // 只返回前10名
-      const max = sary.size > 10 ? 10 : sary.size;
+      const max = sary.size > 30 ? 30 : sary.size;
       for ( let i = 0; i< max ; i++) {
         const value = sary.get(i);
         res.push(value)
@@ -118,32 +118,43 @@ class Body extends React.Component {
       background: `#${Colors.c2}`
     }
 
+    const boxStyle = {
+        ...this.props.style,
+        overflow:'auto',
+        display:'block'
+    };
+
+
     const { menu, data } = this.props;
     const { sortIndex } = this.state;
     const getRows = this.createRowByMenu(menu, data, sortIndex);
     const sary = this.getSort(getRows, sortIndex)
 
+
+
     return (
-      <table style={this.props.style}>
-        <tbody>
-        <tr style={headerStyle}>
-          <th style={normalStyle}>排名</th>
-          {menu.map((item, index) => {
-            return <th key={index} style={index==this.state.sortIndex ? chooseStyle : normalStyle} onClick={()=>this.setState({sortIndex:index})} >{item.name}{index==this.state.sortIndex ? <i style={iconStyle}>&#xe604;</i> : ''}</th>
-          })}
-        </tr>
+        <div style={boxStyle}>
+          <table style={{minWidth:'100%'}}>
+            <tbody style={{overflow:'scroll'}}>
+            <tr style={headerStyle}>
+              <th style={normalStyle}>排名</th>
+                {menu.map((item, index) => {
+                    return <th key={index} style={index==this.state.sortIndex ? chooseStyle : normalStyle} onClick={()=>this.setState({sortIndex:index})} >{item.name}{index==this.state.sortIndex ? <i style={iconStyle}>&#xe604;</i> : ''}</th>
+                })}
+            </tr>
 
 
-      { sary.length > 0? sary.map( (r,i) => {
-        return (
-          <tr key={i}>
-            <td>{i+1}</td> {r.map( (d,i) => { return <td key={i}>{d}</td> })}
-          </tr>
-        ) 
-      }): <tr> <td>Loading</td> </tr>}
+            { sary.length > 0? sary.map( (r,i) => {
+                return (
+                    <tr key={i} style={rowStyle}>
+                      <td>{i+1}</td> {r.map( (d,i) => { return <td key={i}>{d}</td> })}
+                    </tr>
+                )
+            }): <tr> <td>Loading</td> </tr>}
 
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
     )
   }
 }
