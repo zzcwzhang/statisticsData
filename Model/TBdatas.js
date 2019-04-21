@@ -1,9 +1,8 @@
 const mysql = require('mysql');
 
 const mysqlConfig = {
-    host:'47.92.26.118',
-    user:'zy',
-    password:'123456',
+    /* host:'47.92.26.118', */
+		host:'60.205.185.67',
     database:'tieba'
 };
 
