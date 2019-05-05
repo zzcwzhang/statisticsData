@@ -2,6 +2,7 @@ import React from 'react';
 import fetch from 'isomorphic-unfetch'
 import swal from 'sweetalert2'
 import MyLayout from '../components/MyLayout.js'
+import URL from '../config/systemConfig'
 import Card from '../components/Card'
 import Tip from '../components/Tip'
 
@@ -30,7 +31,7 @@ class screen extends React.PureComponent {
     }
 
     getAllTheme() {
-        fetch('http://47.92.26.118:3001/theme/all.do',{cache: 'no-store'}).then( res => {
+        fetch(URL + '/theme/all.do',{cache: 'no-store'}).then( res => {
             return res.json();
         } ).then( json => {
             this.setState({
